@@ -33,167 +33,98 @@ class _carta:
         self.sequence = _sequencia
 
 
-mao1 = []
-mao2 = []
+def gera_mao():
 
-for n in range(5):
+    mao = []
 
-    naipe = random.choice(naipes)
-    valor = random.choice(val)
-    numero = num[valor-2]
-    sequencia = seq[(valor - 2)*(naipes.index(naipe) + 1)]
-    mao1.append(_carta(numero, naipe, valor, sequencia))
+    for n in range(5):
 
-for n in range(5):
+        naipe = random.choice(naipes)
+        valor = random.choice(val)
+        numero = num[valor-2]
+        sequencia = seq[(valor - 2)*(naipes.index(naipe) + 1)]
+        mao.append(_carta(numero, naipe, valor, sequencia))
+    
+    return mao
 
-    naipe = random.choice(naipes)
-    valor = random.choice(val)
-    numero = num[valor-2]
-    sequencia = seq[(valor - 2)*(naipes.index(naipe) + 1)]
-    mao2.append(_carta(numero, naipe, valor, sequencia))
+
+mao1 = gera_mao()
+mao2 = gera_mao()
 
 print(mao1[0].numero + mao1[0].naipe, mao1[1].numero + mao1[1].naipe, mao1[2].numero +
       mao1[2].naipe, mao1[3].numero + mao1[3].naipe, mao1[4].numero + mao1[4].naipe)
 print(mao2[0].numero + mao2[0].naipe, mao2[1].numero + mao2[1].naipe, mao2[2].numero +
       mao2[2].naipe, mao2[3].numero + mao2[3].naipe, mao2[4].numero + mao2[4].naipe)
 
-mao1_crescente = sorted([mao1[0].valor, mao1[1].valor,
-                        mao1[2].valor, mao1[3].valor, mao1[4].valor])
-mao2_crescente = sorted([mao2[0].valor, mao2[1].valor,
-                        mao2[2].valor, mao2[3].valor, mao2[4].valor])
+def calcula_força(mao):
 
-força_mao1 = (5*(mao1[0].valor + mao1[1].valor +
-              mao1[2].valor + mao1[3].valor + mao1[4].valor))
-força_mao2 = (5*(mao2[0].valor + mao2[1].valor +
-              mao2[2].valor + mao2[3].valor + mao2[4].valor))
+    conferidor_sequencia = 0
+    conferidor_naipe = 0
+    conferidor_carta_igual = 0
+    força = 0
 
-print(mao1_crescente, mao2_crescente)
+    mao_crescente = sorted([mao[0].valor, mao[1].valor, mao[2].valor, mao[3].valor, mao[4].valor])
+    força_mao = (5*(mao[0].valor + mao[1].valor + mao[2].valor + mao[3].valor + mao[4].valor))
 
-# Análise da Mão 1:
-
-conferidor_sequencia1 = 0
-conferidor_naipe1 = 0
-conferidor_carta_igual1 = 0
-força1 = 0
-
-print(força_mao1, força_mao2)
-
-for n in range(4):
-    if (mao1_crescente[n] + 1) == mao1_crescente[n + 1]:
-        conferidor_sequencia1 = conferidor_sequencia1 + 1
+    for n in range(4):
+        if (mao_crescente[n] + 1) == mao_crescente[n + 1]:
+            conferidor_sequencia = conferidor_sequencia + 1
 
 
-for n in range(len(mao1)-1):
-    for m in range(len(mao1)-n-1):
-        if mao1[n].valor == mao1[n+m+1].valor:
-            conferidor_carta_igual1 = conferidor_carta_igual1 + 1
+    for n in range(len(mao)-1):
+        for m in range(len(mao)-n-1):
+            if mao[n].valor == mao[n+m+1].valor:
+                conferidor_carta_igual = conferidor_carta_igual + 1
 
-        if mao1[n].naipe == mao1[n+m+1].naipe:
-            conferidor_naipe1 = conferidor_naipe1 + 1
-
-
-if conferidor_sequencia1 == 4:
-
-    if conferidor_naipe1 == 5 and mao1_crescente[4] == 14:
-        força1 = 10000
-        # Royal Flush
-
-    elif conferidor_naipe1 == 5:
-        força1 = 9000
-        # Straight flush
-
-    else:
-        força1 = 5000
-        # Straight
-
-elif conferidor_naipe1 == 5:
-    força1 = 6000
-    # Flush
-
-if conferidor_carta_igual1 == 1:
-    força1 = 2000
-    # Par
-
-elif conferidor_carta_igual1 == 2:
-    força1 = 3000
-    # Double Par
-
-elif conferidor_carta_igual1 == 3:
-    força1 = 4000
-    # Trinca
-
-elif conferidor_carta_igual1 == 4:
-    força1 = 7000
-    # Full House
-
-elif conferidor_carta_igual1 == 6:
-    força1 = 8000
-    # Quadra
-
-força_mao1_final = força1 + força_mao1
-
-# Análise Mão 2:
-
-conferidor_sequencia2 = 0
-conferidor_naipe2 = 0
-conferidor_carta_igual2 = 0
-força2 = 0
+            if mao[n].naipe == mao[n+m+1].naipe:
+                conferidor_naipe = conferidor_naipe + 1
 
 
-for n in range(4):
-    if (mao2_crescente[n] + 1) == mao2_crescente[n + 1]:
-        conferidor_sequencia2 = conferidor_sequencia2 + 1
+    if conferidor_sequencia == 4:
+
+        if conferidor_naipe == 5 and mao_crescente[4] == 14:
+            força = 10000
+            #Royal Flush
+
+        elif conferidor_naipe == 5:
+            força = 9000
+            # Straight flush
+
+        else:
+            força = 5000
+            # Straight
+
+    elif conferidor_naipe == 5:
+        força = 6000
+        # Flush
+
+    if conferidor_carta_igual == 1:
+        força = 2000
+        # Par
+
+    elif conferidor_carta_igual == 2:
+        força = 3000
+        # Double Par
+
+    elif conferidor_carta_igual == 3:
+        força = 4000
+        # Trinca
+
+    elif conferidor_carta_igual == 4:
+        força = 7000
+        # Full House
+
+    elif conferidor_carta_igual == 6:
+        força = 8000
+        # Quadra
+
+    força_mao_final = força + força_mao
+
+    return força_mao_final
 
 
-for n in range(len(mao2)-1):
-    for m in range(len(mao2)-n-1):
-        if mao2[n].valor == mao2[n+m+1].valor:
-            conferidor_carta_igual2 = conferidor_carta_igual2 + 1
-
-        if mao2[n].naipe == mao2[n+m+1].naipe:
-            conferidor_naipe2 = conferidor_naipe2 + 1
-
-
-if conferidor_sequencia2 == 4:
-
-    if conferidor_naipe2 == 5 and mao2_crescente[4] == 14:
-        força2 = 10000
-        # Royal Flush
-
-    elif conferidor_naipe2 == 5:
-        força2 = 9000
-        # Straight flush
-
-    else:
-        força2 = 5000
-        # Straight
-
-elif conferidor_naipe2 == 5:
-    força2 = 6000
-    # Flush
-
-if conferidor_carta_igual2 == 1:
-    força2 = 2000
-    # Par
-
-elif conferidor_carta_igual2 == 2:
-    força2 = 3000
-    # Double Par
-
-elif conferidor_carta_igual2 == 3:
-    força2 = 4000
-    # Trinca
-
-elif conferidor_carta_igual2 == 4:
-    força2 = 7000
-    # Full House
-
-elif conferidor_carta_igual2 == 6:
-    força2 = 8000
-    # Quadra
-
-força_mao2_final = força2 + força_mao2
-
+força_mao1_final = calcula_força(mao1)
+força_mao2_final = calcula_força(mao2)
 
 print(força_mao1_final)
 print(força_mao2_final)
